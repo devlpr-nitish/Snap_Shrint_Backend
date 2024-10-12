@@ -4,18 +4,35 @@ import SnapController from "./snaps.controllers.js";
 import { upload } from "../../middlewares/multer.middleware.js";
 
 const snapRouter = Router();
-
 const snapController = new SnapController();
-const routeHandler = (method) => (req, res, next) => method(req, res, next);
 
-snapRouter.post('/ai', routeHandler(snapController.getAiImage));
-snapRouter.post('/save', routeHandler(snapController.saveSnap));
-snapRouter.get('/', routeHandler(snapController.getSnaps));
-snapRouter.post('/create-snap', upload.single('imageUrl'), routeHandler(snapController.createPost));
-snapRouter.delete('/:id', routeHandler(snapController.deleteSnaps));
-snapRouter.get('/posts', routeHandler(snapController.getPosts));
-snapRouter.delete('/posts/:id', routeHandler(snapController.deletePosts));
+snapRouter.post('/ai', (req, res, next) => {
+    snapController.getAiImage(req, res, next);
+});
 
+snapRouter.post('/save', (req, res, next) => {
+    snapController.saveSnap(req, res, next);
+});
+
+snapRouter.get('/', (req, res, next) => {
+    snapController.getSnaps(req, res, next);
+});
+
+snapRouter.post('/create-snap', upload.single('imageUrl'), (req, res, next) => {
+    snapController.createPost(req, res, next);
+});
+
+snapRouter.delete('/:id', (req, res, next) => {
+    snapController.deleteSnaps(req, res, next);
+});
+
+snapRouter.get('/posts', (req, res, next) => {
+    snapController.getPosts(req, res, next);
+});
+
+snapRouter.delete('/posts/:id', (req, res, next) => {
+    snapController.deletePosts(req, res, next);
+});
 
 
 export default snapRouter;
