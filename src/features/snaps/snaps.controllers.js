@@ -12,6 +12,9 @@ export default class SnapController {
         try {
             const { snapUrl } = req.query;
             const userID = req.userID;
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
 
             const newSnap = new snapModel({
                 user: userID,
@@ -32,7 +35,9 @@ export default class SnapController {
     async getSnaps(req, res, next) {
         try {
             const userID = req.userID;
-
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
             const snaps = await snapModel.find({ user: userID });
 
             return res.status(200).json({ snaps: snaps, success: true });
@@ -49,6 +54,9 @@ export default class SnapController {
         try {
             const userID = req.userID;
             const snapId = req.params.id;
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
 
             await snapModel.deleteOne({ user: userID, _id: new ObjectId(snapId) });
 
@@ -65,6 +73,9 @@ export default class SnapController {
         try {
             const userID = req.userID;
             const postId = req.params.id;
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
 
             await postModel.deleteOne({ user: userID, _id: new ObjectId(postId) });
 
@@ -81,6 +92,9 @@ export default class SnapController {
     async createPost(req, res, next) {
         try {
             const userID = req.userID;
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
 
             const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: 'uploads'
@@ -111,6 +125,9 @@ export default class SnapController {
     async getPosts(req, res, next) {
         try {
             const userID = req.userID;
+            if (!userID) {
+                return res.status(400).json({ message: "unauthorized user", success: false });
+            }
             const posts = await postModel.find({ user: userID });
 
             return res.status(200).json({ posts: posts, success: true });
